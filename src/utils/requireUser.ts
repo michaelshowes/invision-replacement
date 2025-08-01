@@ -11,7 +11,7 @@ export async function requireUser() {
     headers: await headers()
   });
 
-  if (!session) {
-    redirect('/auth/login');
-  }
+  // if (!session) {
+  //   redirect('/auth/login');
+  // }
 }

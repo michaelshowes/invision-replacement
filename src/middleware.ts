@@ -8,7 +8,9 @@ const publicRoutes = [
   '/auth/login',
   '/auth/sign-up',
   '/auth/forgot-password',
-  '/auth/reset-password'
+  '/auth/reset-password',
+  '/api/accept-invitation',
+  '/dashboard'
 ];
 
 export function middleware(request: NextRequest) {
@@ -36,7 +38,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // Protected routes
-    '/dashboard/:path*',
+    // '/dashboard/:path*',
     // Exclude public assets and api routes
     '/((?!_next/static|_next/image|favicon.ico).*)'
   ]

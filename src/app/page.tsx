@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import { auth } from '@/lib/auth';
 
@@ -7,13 +8,11 @@ export default async function Home() {
     headers: await headers()
   });
 
-  if (!session) {
-    return <div>Not authenticated</div>;
-  }
+  return <div>Hello</div>;
 
-  return (
-    <div>
-      <h1>Welcome {session.user.name}</h1>
-    </div>
-  );
+  // if (!session) {
+  //   redirect('/auth/login');
+  // }
+
+  // redirect('/dashboard');
 }

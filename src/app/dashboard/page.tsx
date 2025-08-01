@@ -1,29 +1,23 @@
-import { headers } from 'next/headers';
+import Link from 'next/link';
 
-import LogoutBtn from '@/components/auth/LogoutBtn';
-import { auth } from '@/lib/auth';
+import { getAllOrganizations } from '@/server/organizations';
 
 export default async function DashboardPage() {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  });
-
-  const data = await auth.api.userHasPermission({
-    headers: await headers(),
-    body: {
-      permission: {
-        comments: ['create']
-      }
-    }
-  });
-
-  console.log(data);
+  const organizations = await getAllOrganizations();
 
   return (
     <div>
-      <h1>Dashboard</h1>
-      <p>Welcome {session?.user.name}</p>
-      <LogoutBtn />
+      <h1>Clients</h1>
+
+      <div>
+        {organizations.map((organization) => (
+          <div key={organization.id}>
+            <Link href={`/dashboard/clients/${organization.slug}`}>
+              {organization.name}
+            </Link>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
