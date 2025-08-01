@@ -14,8 +14,11 @@
     "push": "drizzle-kit generate && drizzle-kit push"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.1",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "better-auth": "^1.3.4",
+    "better-auth": "^1.2.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.1",
@@ -23,12 +26,18 @@
     "drizzle-orm": "^0.44.4",
     "lucide-react": "^0.534.0",
     "next": "15.4.5",
+    "next-themes": "^0.4.6",
     "pg": "^8.16.3",
+    "postgres": "^3.4.7",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "tailwind-merge": "^3.3.1"
+    "react-hook-form": "^7.61.1",
+    "react-icons": "^5.5.0",
+    "sonner": "^2.0.6",
+    "tailwind-merge": "^3.3.1",
+    "zod": "^4.0.14"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,5 +1,5 @@
-import { users, sessions, accounts, verifications } from '@/db/schema/auth';
+import { accounts, sessions, users, verifications } from '@/db/schema/auth';
 
 export { users, sessions, accounts, verifications };
 
-export const schemas = { users, sessions, accounts, verifications };
+export const schema = { users, sessions, accounts, verifications };

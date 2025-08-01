@@ -1,19 +1,18 @@
 import { headers } from 'next/headers';
 
+import LogoutBtn from '@/components/auth/LogoutBtn';
 import { auth } from '@/lib/auth/server';
 
-export default async function Home() {
+export default async function DashboardPage() {
   const session = await auth.api.getSession({
     headers: await headers()
   });
 
-  if (!session) {
-    return <div>Not authenticated</div>;
-  }
-
   return (
     <div>
-      <h1>Welcome {session.user.name}</h1>
+      <h1>Dashboard</h1>
+      <p>Welcome {session?.user.name}</p>
+      <LogoutBtn />
     </div>
   );
 }

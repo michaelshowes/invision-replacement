@@ -1,19 +1,17 @@
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 import { auth } from '@/lib/auth/server';
 
-export default async function Home() {
+/**
+ * Redirects to the login page if the user is not logged in
+ */
+export async function requireUser() {
   const session = await auth.api.getSession({
     headers: await headers()
   });
 
   if (!session) {
-    return <div>Not authenticated</div>;
+    redirect('/auth/login');
   }
-
-  return (
-    <div>
-      <h1>Welcome {session.user.name}</h1>
-    </div>
-  );
 }

@@ -1,26 +1,16 @@
-import { betterAuth } from 'better-auth';
-import { drizzleAdapter } from 'better-auth/adapters/drizzle';
-import { nextCookies } from 'better-auth/next-js';
+import { adminClient, inferAdditionalFields } from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
 
-import { db } from '@/db';
+import { ac, roles } from './permissions';
+import { auth } from './server';
 
-// your drizzle instance
-
-export const auth = betterAuth({
-  database: drizzleAdapter(db, {
-    provider: 'pg' // or "mysql", "sqlite"
-  }),
-  plugins: [nextCookies()], // make sure this is the last plugin in the array
-  emailAndPassword: {
-    enabled: true
-  },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
-    }
-  }
+// Client-side auth client (no database imports)
+export const authClient = createAuthClient({
+  plugins: [
+    inferAdditionalFields<typeof auth>(),
+    adminClient({
+      roles,
+      ac
+    })
+  ]
 });
-
-export const { signIn, signUp, signOut, useSession } = createAuthClient();
