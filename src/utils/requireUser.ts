@@ -1,7 +1,7 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import { auth } from '@/lib/auth/server';
+import { auth } from '@/lib/auth';
 
 /**
  * Redirects to the login page if the user is not logged in

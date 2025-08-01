@@ -21,16 +21,15 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { authClient } from '@/lib/auth';
+import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { signIn, signUp } from '@/server/users';
+import { signUp } from '@/server/users';
 
 const formSchema = z.object({
   name: z.string().min(1),

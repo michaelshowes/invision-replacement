@@ -14,7 +14,8 @@ const standardStatements = [
 const statements = {
   ...defaultStatements,
   clients: [...standardStatements],
-  comments: [...standardStatements]
+  comments: [...standardStatements],
+  projects: [...standardStatements]
 } as const;
 
 export const ac = createAccessControl(statements);
@@ -24,12 +25,14 @@ export const roles = {
   admin: ac.newRole({
     ...adminAc.statements,
     clients: [...standardStatements],
-    comments: [...standardStatements]
+    comments: [...standardStatements],
+    projects: [...standardStatements]
   }),
 
   // USER
   user: ac.newRole({
     clients: ['read:own', 'update:own'],
-    comments: ['read', 'read:own', 'update:own', 'delete:own']
+    comments: ['create', 'read', 'read:own', 'update:own', 'delete:own'],
+    projects: ['read:own']
   })
 } as const;

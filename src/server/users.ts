@@ -1,9 +1,6 @@
 'use server';
 
-import { headers } from 'next/headers';
-
-import { authClient } from '@/lib/auth';
-import { auth } from '@/lib/auth/server';
+import { auth } from '@/lib/auth';
 
 export async function signIn(email: string, password: string) {
   try {

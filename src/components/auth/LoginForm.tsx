@@ -28,7 +28,7 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { authClient } from '@/lib/auth';
+import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { signIn } from '@/server/users';
 

@@ -1,8 +1,12 @@
-import { adminClient, inferAdditionalFields } from 'better-auth/client/plugins';
+import {
+  adminClient,
+  inferAdditionalFields,
+  organizationClient
+} from 'better-auth/client/plugins';
 import { createAuthClient } from 'better-auth/react';
 
+import { auth } from './auth';
 import { ac, roles } from './permissions';
-import { auth } from './server';
 
 // Client-side auth client (no database imports)
 export const authClient = createAuthClient({
@@ -11,6 +15,7 @@ export const authClient = createAuthClient({
     adminClient({
       roles,
       ac
-    })
+    }),
+    organizationClient()
   ]
 });

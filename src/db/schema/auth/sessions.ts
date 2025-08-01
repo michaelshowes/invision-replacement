@@ -10,8 +10,9 @@ export const sessions = pgTable('sessions', {
   updatedAt: timestamp('updated_at').notNull(),
   ipAddress: text('ip_address'),
   userAgent: text('user_agent'),
-  impersonatedBy: text('impersonated_by'),
   userId: text('user_id')
     .notNull()
-    .references(() => users.id, { onDelete: 'cascade' })
+    .references(() => users.id, { onDelete: 'cascade' }),
+  impersonatedBy: text('impersonated_by'),
+  activeOrganizationId: text('active_organization_id')
 });
