@@ -1,46 +1,6 @@
 'use server';
 
-import { headers } from 'next/headers';
-import { redirect } from 'next/navigation';
-
-import { eq } from 'drizzle-orm';
-
-import { db } from '@/db';
-import { users } from '@/db/schema/auth/_index';
 import { auth } from '@/lib/auth';
-
-/**
- * Get the current user and session.
- * @returns The current user and session.
- * @throws Redirects to login if the user is not authenticated.
- */
-export async function getCurrentUser() {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  });
-
-  // if (!session) {
-  //   redirect('/auth/login');
-  // }
-
-  const currentUser = await db.query.users.findFirst({
-    where: eq(users.id, session?.user.id || '')
-  });
-
-  // if (!currentUser) {
-  //   redirect('/auth/login');
-  // }
-
-  const organizations = await auth.api.listOrganizations({
-    headers: await headers()
-  });
-
-  return {
-    ...session,
-    currentUser,
-    organizations
-  };
-}
 
 /**
  * Sign in a user with email and password.
@@ -84,7 +44,10 @@ export async function signUp(email: string, password: string, name: string) {
       body: {
         email,
         password,
-        name
+        name,
+        firstName: '',
+        lastName: '',
+        isAdmin: false
       }
     });
 

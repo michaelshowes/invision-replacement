@@ -4,23 +4,23 @@ import { eq } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
 
 import { db } from '@/db';
-import { projects } from '@/db/schema/projects';
+import { project } from '@/db/schema/auth/_index';
 
 export async function getProjectById(projectId: string) {
-  const project = await db.query.projects.findFirst({
-    where: eq(projects.id, projectId)
+  const projectRecord = await db.query.project.findFirst({
+    where: eq(project.id, projectId)
   });
 
-  if (!project) {
+  if (!projectRecord) {
     throw new Error('Project not found');
   }
 
-  return project;
+  return projectRecord;
 }
 
 export async function createProject(organizationSlug: string, name: string) {
-  const existingProject = await db.query.projects.findFirst({
-    where: eq(projects.name, name)
+  const existingProject = await db.query.project.findFirst({
+    where: eq(project.name, name)
   });
 
   if (existingProject) {
@@ -29,11 +29,12 @@ export async function createProject(organizationSlug: string, name: string) {
 
   try {
     const result = await db
-      .insert(projects)
+      .insert(project)
       .values({
         id: uuidv4(),
         name,
-        organizationId: organizationSlug
+        organizationId: organizationSlug,
+        createdAt: new Date()
       })
       .returning();
 

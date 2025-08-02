@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import CreateProjectBtn from '@/components/CreateProjectBtn';
-import { getOrganizationBySlug } from '@/server/organizations';
+import { getOrganizationBySlug } from '@/server/organization';
 
 type Params = Promise<{ slug: string }>;
 
@@ -16,7 +16,7 @@ export default async function ClientPage({ params }: { params: Params }) {
       <div>
         {projects.map((project) => (
           <div key={project.id}>
-            <Link href={`/dashboard/clients/${slug}/project/${project.id}`}>
+            <Link href={`/app/clients/${slug}/project/${project.id}`}>
               {project.name}
             </Link>
           </div>

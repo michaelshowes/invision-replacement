@@ -1,7 +1,14 @@
-export { users } from './users';
-export { sessions } from './sessions';
-export { accounts } from './accounts';
-export { verifications } from './verifications';
-export { organizations, organizationRelations } from './organizations';
-export { members, memberRelations } from './members';
-export { invitations } from './invitations';
+export { user } from './user';
+export { session } from './session';
+export { account } from './account';
+export { verification } from './verification';
+export { organization, organizationRelations } from './organization';
+export { member, memberRelations } from './member';
+export type { Role } from './member';
+export { invitation } from './invitation';
+export {
+  project,
+  projectMember,
+  projectRelations,
+  projectMemberRelations
+} from './project';

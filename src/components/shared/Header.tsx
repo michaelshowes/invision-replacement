@@ -11,7 +11,6 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { auth } from '@/lib/auth';
-import { getCurrentUser } from '@/server/users';
 
 import LogoutBtn from '../auth/LogoutBtn';
 import InvitationBtn from '../email/InvitationBtn';
@@ -21,33 +20,29 @@ export default async function Header() {
     headers: await headers()
   });
 
-  console.log(session);
-
   return (
     <header>
       <p>Welcome {session?.user.name}</p>
       <LogoutBtn />
-      <InvitationBtn
+      {/* <InvitationBtn
         email={'mshowes@okidigital.io'}
-        role={session?.user.role}
+        role={'member'}
         organizationId={'qsswKYuxR4bgEY7h7rdk8Z4nmD4MP4Rw'}
-      />
-      {session?.user.role === 'admin' && (
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Create Client</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create Client</DialogTitle>
-              <DialogDescription>
-                Create a new client to get started.
-              </DialogDescription>
-            </DialogHeader>
-            <CreateOrganizationForm />
-          </DialogContent>
-        </Dialog>
-      )}
+      /> */}
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button>Create Organization</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create Organization</DialogTitle>
+            <DialogDescription>
+              Create a new organization to get started.
+            </DialogDescription>
+          </DialogHeader>
+          <CreateOrganizationForm />
+        </DialogContent>
+      </Dialog>
     </header>
   );
 }

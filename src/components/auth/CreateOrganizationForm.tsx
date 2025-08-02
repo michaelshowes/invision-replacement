@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
+import { createOrg } from '@/server/organization';
 import { generateSlug } from '@/utils/generateSlug';
 
 const formSchema = z.object({
@@ -41,19 +42,12 @@ export default function CreateOrganizationForm() {
     try {
       setIsLoading(true);
 
-      const slug = generateSlug(values.name);
+      await createOrg(values.name, values.logo || '');
 
-      await authClient.organization.create({
-        name: values.name,
-        slug: slug,
-        logo: values.logo || undefined,
-        keepCurrentActiveOrganization: false
-      });
-
-      toast.success('Client created successfully');
+      toast.success(`${values.name} created successfully`);
     } catch (error) {
       console.error(error);
-      toast.error('Failed to create client');
+      toast.error('Failed to create organization');
     } finally {
       setIsLoading(false);
     }
@@ -63,7 +57,7 @@ export default function CreateOrganizationForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className='space-y-4'
+        className='flex flex-col gap-8'
       >
         <FormField
           control={form.control}
@@ -77,9 +71,8 @@ export default function CreateOrganizationForm() {
                   {...field}
                 />
               </FormControl>
-              <FormDescription>
-                Slug:{' '}
-                {field.value ? generateSlug(field.value) : 'my-organization'}
+              <FormDescription className={'sr-only'}>
+                This is the name of your organization.
               </FormDescription>
               <FormMessage />
             </FormItem>

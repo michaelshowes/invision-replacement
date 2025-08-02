@@ -1,8 +1,8 @@
 import * as authSchema from '@/db/schema/auth/_index';
 
-import * as projectSchema from './projects';
+import * as sectionSchema from './section';
 
 export const schema = {
   ...authSchema,
-  ...projectSchema
+  ...sectionSchema
 };

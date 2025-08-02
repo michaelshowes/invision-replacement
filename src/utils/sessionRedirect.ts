@@ -12,6 +12,6 @@ export async function sessionRedirect() {
   });
 
   if (session) {
-    redirect('/dashboard');
+    redirect('/app');
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { Role } from '@/db/schema/auth/users';
+import { Role } from '@/db/schema/auth/member';
 import { authClient } from '@/lib/auth-client';
 
 import { Button } from '../ui/button';

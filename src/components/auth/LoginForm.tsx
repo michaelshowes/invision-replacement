@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { FaMicrosoft, FaSlack } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -30,7 +31,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { signIn } from '@/server/users';
+import { signIn } from '@/server/user';
+import { socialSignIn } from '@/utils/socialSignIn';
 
 const formSchema = z.object({
   email: z.email(),
@@ -53,22 +55,13 @@ export function LoginForm({
     }
   });
 
-  async function signInWithGoogle() {
-    await authClient.signIn.social({
-      provider: 'google',
-      callbackURL: '/dashboard'
-    });
-
-    toast.success('Logged in successfully');
-  }
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     const { success, message } = await signIn(values.email, values.password);
 
     if (success) {
       toast.success(message as string);
-      router.push('/dashboard');
+      router.push('/app');
     } else {
       toast.error(message as string);
     }
@@ -83,7 +76,9 @@ export function LoginForm({
       <Card>
         <CardHeader className='text-center'>
           <CardTitle className='text-xl'>Welcome back</CardTitle>
-          <CardDescription>Login with your Google account</CardDescription>
+          <CardDescription>
+            Login with your Google or Microsoft account
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -94,10 +89,19 @@ export function LoginForm({
                     variant='outline'
                     className='w-full'
                     type='button'
-                    onClick={signInWithGoogle}
+                    onClick={() => socialSignIn('google')}
                   >
                     <FcGoogle />
                     Login with Google
+                  </Button>
+                  <Button
+                    variant='outline'
+                    className='w-full'
+                    type='button'
+                    onClick={() => socialSignIn('microsoft')}
+                  >
+                    <FaMicrosoft />
+                    Login with Microsoft
                   </Button>
                 </div>
                 <div className='after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t'>
@@ -166,7 +170,7 @@ export function LoginForm({
                 <div className='text-center text-sm'>
                   Don&apos;t have an account?{' '}
                   <a
-                    href='#'
+                    href='/auth/sign-up'
                     className='underline underline-offset-4'
                   >
                     Sign up

@@ -1,10 +1,10 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { projects } from '../projects';
-import { members } from './members';
+import { member } from './member';
+import { project } from './project';
 
-export const organizations = pgTable('organizations', {
+export const organization = pgTable('organization', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   slug: text('slug').unique(),
@@ -13,7 +13,7 @@ export const organizations = pgTable('organizations', {
   metadata: text('metadata')
 });
 
-export const organizationRelations = relations(organizations, ({ many }) => ({
-  members: many(members),
-  projects: many(projects)
+export const organizationRelations = relations(organization, ({ many }) => ({
+  members: many(member),
+  projects: many(project)
 }));

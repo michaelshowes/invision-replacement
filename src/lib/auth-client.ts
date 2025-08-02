@@ -1,5 +1,4 @@
 import {
-  adminClient,
   inferAdditionalFields,
   inferOrgAdditionalFields,
   organizationClient
@@ -13,12 +12,10 @@ import { ac, roles } from './permissions';
 export const authClient = createAuthClient({
   plugins: [
     inferAdditionalFields<typeof auth>(),
-    // adminClient({
-    //   roles,
-    //   ac
-    // }),
     organizationClient({
-      schema: inferOrgAdditionalFields<typeof auth>()
+      teams: { enabled: true },
+      roles,
+      ac
     })
   ]
 });

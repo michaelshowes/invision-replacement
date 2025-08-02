@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { getAllOrganizations } from '@/server/organizations';
+import { getAllOrganizations } from '@/server/organization';
 
 export default async function DashboardPage() {
   const organizations = await getAllOrganizations();
@@ -12,7 +12,7 @@ export default async function DashboardPage() {
       <div>
         {organizations.map((organization) => (
           <div key={organization.id}>
-            <Link href={`/dashboard/clients/${organization.slug}`}>
+            <Link href={`/app/clients/${organization.slug}`}>
               {organization.name}
             </Link>
           </div>

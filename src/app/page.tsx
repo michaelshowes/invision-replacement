@@ -8,11 +8,9 @@ export default async function Home() {
     headers: await headers()
   });
 
-  return <div>Hello</div>;
+  if (!session) {
+    redirect('/auth/login');
+  }
 
-  // if (!session) {
-  //   redirect('/auth/login');
-  // }
-
-  // redirect('/dashboard');
+  redirect('/app');
 }

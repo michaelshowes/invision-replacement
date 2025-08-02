@@ -1,45 +1,47 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 import { getSessionCookie } from 'better-auth/cookies';
 
-// List of public routes that don't require authentication
-const publicRoutes = [
-  '/auth/login',
-  '/auth/sign-up',
-  '/auth/forgot-password',
-  '/auth/reset-password',
-  '/api/accept-invitation',
-  '/dashboard'
-];
+export async function middleware(request: NextRequest) {
+  const hostname = request.headers.get('host') || '';
+  const pathname = request.nextUrl.pathname;
 
-export function middleware(request: NextRequest) {
-  // Check if the current path is a public route
-  if (
-    publicRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
-  ) {
-    return NextResponse.next();
+  // Handle subdomain routing
+  if (hostname.startsWith('app.')) {
+    // Check authentication for subdomain requests
+    const sessionCookie = getSessionCookie(request);
+
+    if (!sessionCookie) {
+      // Redirect to login page, preserving the subdomain
+      const loginUrl = new URL('/auth/login', request.url);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Rewrite app.example.com/* to /app/*
+    const url = request.nextUrl.clone();
+    url.pathname = `/app${pathname}`;
+    return NextResponse.rewrite(url);
   }
 
-  // Check for session cookie
-  const sessionCookie = getSessionCookie(request);
+  // Handle authentication for direct app routes
+  if (pathname.startsWith('/app')) {
+    const sessionCookie = getSessionCookie(request);
 
-  // If no session and trying to access protected route, redirect to login
-  if (!sessionCookie && !request.nextUrl.pathname.startsWith('/api/auth')) {
-    const loginUrl = new URL('/auth/login', request.url);
-    loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
-    return NextResponse.redirect(loginUrl);
+    // THIS IS NOT SECURE!
+    // This is the recommended approach to optimistically redirect users
+    // We recommend handling auth checks in each page/route
+    if (!sessionCookie) {
+      return NextResponse.redirect(new URL('/auth/login', request.url));
+    }
   }
 
   return NextResponse.next();
 }
 
-// Configure which routes should be handled by this middleware
 export const config = {
   matcher: [
-    // Protected routes
-    // '/dashboard/:path*',
-    // Exclude public assets and api routes
-    '/((?!_next/static|_next/image|favicon.ico).*)'
+    '/app/:path*',
+    // Add matcher for subdomain requests
+    '/((?!api|_next/static|_next/image|favicon.ico).*)'
   ]
 };

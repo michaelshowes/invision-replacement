@@ -27,7 +27,7 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { createProject } from '@/server/projects';
+import { createProject } from '@/server/project';
 
 const formSchema = z.object({
   name: z.string().min(2).max(128)
@@ -53,7 +53,7 @@ export default function CreateProjectBtn({
 
       const { data } = await createProject(organizationId, values.name);
 
-      router.push(`/dashboard/clients/${organizationId}/project/${data?.id}`);
+      router.push(`/app/clients/${organizationId}/project/${data?.id}`);
 
       toast.success(`${data?.name} created successfully`);
     } catch (error) {

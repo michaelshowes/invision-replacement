@@ -1,9 +1,9 @@
 'use server';
 
-import { Role } from '@/db/schema/auth/users';
+import { Role } from '@/db/schema/auth/_index';
 import { auth } from '@/lib/auth';
 
-import { isAdmin } from './persmission';
+import { isAdmin } from './permission';
 
 export async function addMembertoClient(
   clientId: string,
@@ -15,7 +15,7 @@ export async function addMembertoClient(
     await auth.api.addMember({
       body: {
         userId,
-        role: role === 'user' ? 'member' : role,
+        role,
         organizationId: clientId
       }
     });

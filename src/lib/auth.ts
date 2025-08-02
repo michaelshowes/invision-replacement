@@ -12,17 +12,21 @@ import { resend } from './resend';
 
 // Server-side auth configuration
 export const auth = betterAuth({
+  trustedOrigins: ['https://localhost:3000'],
+  user: {
+    additionalFields: {
+      firstName: { type: 'string' },
+      lastName: { type: 'string' },
+      isAdmin: { type: 'boolean' }
+    }
+  },
   database: drizzleAdapter(db, {
-    provider: 'pg', // or "mysql", "sqlite"
-    schema: schema,
-    usePlural: true
+    provider: 'pg',
+    schema: schema
   }),
   plugins: [
-    // admin({
-    //   roles,
-    //   ac
-    // }),
     organization({
+      teams: { enabled: true },
       ac,
       roles,
       creatorRole: 'admin',
@@ -41,19 +45,51 @@ export const auth = betterAuth({
             inviteLink
           })
         });
+      },
+      schema: {
+        team: { modelName: 'project' },
+        teamMember: {
+          modelName: 'projectMember',
+          fields: {
+            teamId: 'projectId'
+          }
+        },
+        invitation: {
+          fields: {
+            teamId: 'projectId'
+          }
+        },
+        session: {
+          fields: {
+            activeTeamId: 'activeProjectId'
+          }
+        }
       }
     }),
     nextCookies()
   ], // make sure this is the last plugin in the array
-  emailAndPassword: {
-    enabled: true
-  },
+  emailAndPassword: { enabled: true },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+    },
+    microsoft: {
+      clientId: process.env.MICROSOFT_CLIENT_ID!,
+      clientSecret: process.env.MICROSOFT_CLIENT_SECRET!,
+      tenantId: process.env.MICROSOFT_TENANT_ID!
+    }
+    // slack: {
+    //   clientId: process.env.SLACK_CLIENT_ID!,
+    //   clientSecret: process.env.SLACK_CLIENT_SECRET!
+    // }
+  },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 10 * 60 // 10 minutes
     }
   },
   // Set default redirect URL after successful authentication
-  redirectTo: '/dashboard'
+  redirectTo: '/app'
 });

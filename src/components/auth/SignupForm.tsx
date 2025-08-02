@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { FaMicrosoft } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -29,7 +30,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
-import { signUp } from '@/server/users';
+import { signUp } from '@/server/user';
+import { socialSignIn } from '@/utils/socialSignIn';
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -54,13 +56,6 @@ export function SignupForm({
     }
   });
 
-  function signInWithGoogle() {
-    authClient.signIn.social({
-      provider: 'google',
-      callbackURL: '/dashboard'
-    });
-  }
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     const { success, message } = await signUp(
@@ -71,7 +66,7 @@ export function SignupForm({
 
     if (success) {
       toast.success(message as string);
-      router.push('/dashboard');
+      router.push('/app');
     } else {
       toast.error(message as string);
     }
@@ -97,10 +92,19 @@ export function SignupForm({
                     variant='outline'
                     className='w-full'
                     type='button'
-                    onClick={signInWithGoogle}
+                    onClick={() => socialSignIn('google')}
                   >
                     <FcGoogle />
                     Sign up with Google
+                  </Button>
+                  <Button
+                    variant='outline'
+                    className='w-full'
+                    type='button'
+                    onClick={() => socialSignIn('microsoft')}
+                  >
+                    <FaMicrosoft />
+                    Sign up with Microsoft
                   </Button>
                 </div>
                 <div className='after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t'>

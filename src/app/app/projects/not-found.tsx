@@ -12,7 +12,7 @@ export default function NotFound() {
         The client you're looking for could not be found.
       </p>
       <Button asChild>
-        <Link href='/dashboard'>Back to Dashboard</Link>
+        <Link href='/app'>Back to Dashboard</Link>
       </Button>
     </div>
   );
