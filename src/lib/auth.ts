@@ -47,22 +47,21 @@ export const auth = betterAuth({
         });
       },
       schema: {
-        team: { modelName: 'project' },
+        team: {
+          modelName: 'project',
+          additionalFields: {
+            prefix: { type: 'string' }
+          }
+        },
         teamMember: {
           modelName: 'projectMember',
-          fields: {
-            teamId: 'projectId'
-          }
+          fields: { teamId: 'projectId' }
         },
         invitation: {
-          fields: {
-            teamId: 'projectId'
-          }
+          fields: { teamId: 'projectId' }
         },
         session: {
-          fields: {
-            activeTeamId: 'activeProjectId'
-          }
+          fields: { activeTeamId: 'activeProjectId' }
         }
       }
     }),

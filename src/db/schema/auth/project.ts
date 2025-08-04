@@ -7,6 +7,7 @@ import { user } from './user';
 const project = pgTable('project', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
+  prefix: text('identifier'),
   organizationId: text('organization_id')
     .notNull()
     .references(() => organization.id, { onDelete: 'cascade' }),

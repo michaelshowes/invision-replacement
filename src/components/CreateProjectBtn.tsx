@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
@@ -30,8 +30,18 @@ import { Input } from '@/components/ui/input';
 import { createProject } from '@/server/project';
 
 const formSchema = z.object({
-  name: z.string().min(2).max(128)
+  name: z.string().min(2).max(128),
+  prefix: z.string().min(2).max(6)
 });
+
+// Function to generate prefix from name (first letter of each word)
+function generatePrefix(name: string): string {
+  return name
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase())
+    .join('')
+    .slice(0, 6); // Limit to 6 characters max
+}
 
 export default function CreateProjectBtn({
   organizationId
@@ -40,12 +50,44 @@ export default function CreateProjectBtn({
 }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isPrefixManuallyModified, setIsPrefixManuallyModified] =
+    useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: ''
+      name: '',
+      prefix: ''
     }
   });
+
+  // Watch the name field for changes
+  const nameValue = form.watch('name');
+  const prefixValue = form.watch('prefix');
+
+  // Auto-populate prefix based on name
+  useEffect(() => {
+    if (nameValue && !isPrefixManuallyModified) {
+      const generatedPrefix = generatePrefix(nameValue);
+      form.setValue('prefix', generatedPrefix);
+    }
+  }, [nameValue, isPrefixManuallyModified, form]);
+
+  // Track if prefix has been manually modified
+  useEffect(() => {
+    if (nameValue && prefixValue) {
+      const expectedPrefix = generatePrefix(nameValue);
+      // If the current prefix doesn't match what would be auto-generated, mark as manually modified
+      if (prefixValue !== expectedPrefix && prefixValue !== '') {
+        setIsPrefixManuallyModified(true);
+      }
+    }
+
+    // Reset manual modification flag if prefix is cleared
+    if (prefixValue === '') {
+      setIsPrefixManuallyModified(false);
+    }
+  }, [prefixValue, nameValue]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -91,6 +133,29 @@ export default function CreateProjectBtn({
                     <Input
                       placeholder='My Project'
                       {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='prefix'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Prefix</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='MYP'
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        // Mark as manually modified when user types in prefix field
+                        if (e.target.value !== generatePrefix(nameValue)) {
+                          setIsPrefixManuallyModified(true);
+                        }
+                      }}
                     />
                   </FormControl>
                   <FormMessage />

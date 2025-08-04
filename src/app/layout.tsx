@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className='h-screen w-screen'>
+      <body className='h-full'>
         <Toaster position={'top-center'} />
         {children}
       </body>
