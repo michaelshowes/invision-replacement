@@ -19,16 +19,18 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { authClient } from '@/lib/auth-client';
-import { createOrg } from '@/server/organization';
-import { generateSlug } from '@/utils/generateSlug';
+import { createorganization } from '@/server/organization';
 
 const formSchema = z.object({
   name: z.string().min(2).max(128),
   logo: z.string().url().optional().or(z.literal(''))
 });
 
-export default function CreateOrganizationForm() {
+export default function CreateorganizationForm({
+  onSuccess
+}: {
+  onSuccess: () => void;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,9 +44,11 @@ export default function CreateOrganizationForm() {
     try {
       setIsLoading(true);
 
-      await createOrg(values.name, values.logo || '');
+      await createorganization(values.name, values.logo || '');
 
       toast.success(`${values.name} created successfully`);
+
+      onSuccess();
     } catch (error) {
       console.error(error);
       toast.error('Failed to create organization');
@@ -67,7 +71,7 @@ export default function CreateOrganizationForm() {
               <FormLabel>Name</FormLabel>
               <FormControl>
                 <Input
-                  placeholder='My Organization'
+                  placeholder='My organization'
                   {...field}
                 />
               </FormControl>
@@ -86,7 +90,7 @@ export default function CreateOrganizationForm() {
           {isLoading ? (
             <Loader2 className={'size-4 animate-spin'} />
           ) : (
-            'Create Organization'
+            'Create organization'
           )}
         </Button>
       </form>

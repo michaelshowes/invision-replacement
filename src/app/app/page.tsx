@@ -1,24 +1,35 @@
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-import CreateProjectBtn from '@/components/CreateProjectBtn';
 import { auth } from '@/lib/auth';
 
 export default async function AppRedirect() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
   const organizations = await auth.api.listOrganizations({
     headers: await headers()
   });
 
-  if (organizations.length === 0) {
-    redirect('/app/create-organization');
+  if (!session) {
+    redirect('/auth/login');
   }
 
-  return (
-    <div className={'h-full px-4'}>
+  if (!organizations.length) {
+    return (
       <div>
-        <div>Create a new project</div>
-        <CreateProjectBtn />
+        <p>
+          You are not currently a member of any organizations. Please contact
+          your administrator to be added to an organization.
+        </p>
       </div>
-    </div>
-  );
+    );
+  }
+
+  if (!session.user.isAdmin) {
+    redirect(`/app/organizations/${organizations[0].slug}`);
+  } else {
+    redirect(`/app/dashboard`);
+  }
 }

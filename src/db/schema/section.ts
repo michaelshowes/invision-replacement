@@ -1,16 +1,16 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { project } from './auth/project';
+import { organization } from './auth/organization';
 
 const section = pgTable('section', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   description: text('description'),
   order: integer('order'),
-  projectId: text('project_id')
+  organizationId: text('organization_id')
     .notNull()
-    .references(() => project.id, { onDelete: 'cascade' }),
+    .references(() => organization.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at')
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
@@ -20,9 +20,9 @@ const section = pgTable('section', {
 });
 
 const sectionRelations = relations(section, ({ one }) => ({
-  project: one(project, {
-    fields: [section.projectId],
-    references: [project.id]
+  organization: one(organization, {
+    fields: [section.organizationId],
+    references: [organization.id]
   })
 }));
 

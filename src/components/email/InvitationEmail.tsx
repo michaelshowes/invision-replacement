@@ -14,19 +14,22 @@ import {
   Text
 } from '@react-email/components';
 
-interface OrganizationInvitationEmailProps {
+interface InvitationEmailProps {
   email: string;
   invitedByUsername: string;
   invitedByEmail: string;
-  teamName: string;
   inviteLink: string;
+  organizationName: string;
 }
 
-export default function InvitationEmail(
-  props: OrganizationInvitationEmailProps
-) {
-  const { email, invitedByUsername, invitedByEmail, teamName, inviteLink } =
-    props;
+export default function InvitationEmail(props: InvitationEmailProps) {
+  const {
+    email,
+    invitedByUsername,
+    invitedByEmail,
+    inviteLink,
+    organizationName
+  } = props;
 
   return (
     <Html
@@ -35,13 +38,13 @@ export default function InvitationEmail(
     >
       <Tailwind>
         <Head />
-        <Preview>You've been invited to join {teamName}</Preview>
+        <Preview>You`&apos;`ve been invited to join {organizationName}</Preview>
         <Body className='bg-gray-100 py-[40px] font-sans'>
           <Container className='mx-auto max-w-[600px] rounded-[8px] bg-white p-[40px] shadow-sm'>
             {/* Header */}
             <Section className='mb-[32px] text-center'>
               <Heading className='m-0 mb-[8px] text-[28px] font-bold text-gray-900'>
-                You're invited to join {teamName}
+                You`&apos;`re invited to join {organizationName}
               </Heading>
               <Text className='m-0 text-[16px] text-gray-600'>
                 {invitedByUsername} has invited you to collaborate
@@ -55,9 +58,9 @@ export default function InvitationEmail(
               </Text>
               <Text className='m-0 mb-[16px] text-[16px] leading-[24px] text-gray-700'>
                 <strong>{invitedByUsername}</strong> ({invitedByEmail}) has
-                invited you to join <strong>{teamName}</strong>. You'll be able
-                to collaborate with the team and access shared resources once
-                you accept this invitation.
+                invited you to join <strong>{organizationName}</strong>.
+                You`&apos;`ll be able to collaborate with the team and access
+                shared resources once you accept this invitation.
               </Text>
               <Text className='m-0 mb-[24px] text-[16px] leading-[24px] text-gray-700'>
                 Click the button below to accept your invitation and get
@@ -78,8 +81,8 @@ export default function InvitationEmail(
             {/* Alternative Link */}
             <Section className='mb-[32px]'>
               <Text className='m-0 mb-[8px] text-[14px] leading-[20px] text-gray-600'>
-                If the button doesn't work, you can copy and paste this link
-                into your browser:
+                If the button doesn`&apos;`t work, you can copy and paste this
+                link into your browser:
               </Text>
               <Link
                 href={inviteLink}
@@ -93,15 +96,16 @@ export default function InvitationEmail(
             <Section className='mb-[32px] border-t border-gray-200 pt-[24px]'>
               <Text className='m-0 text-[14px] leading-[20px] text-gray-600'>
                 <strong>Note:</strong> This invitation was sent to {email}. If
-                you weren't expecting this invitation, you can safely ignore
-                this email.
+                you weren`&apos;`t expecting this invitation, you can safely
+                ignore this email.
               </Text>
             </Section>
 
             {/* Footer */}
             <Section className='border-t border-gray-200 pt-[24px]'>
               <Text className='m-0 mb-[8px] text-[12px] leading-[16px] text-gray-500'>
-                © {new Date().getFullYear()} {teamName}. All rights reserved.
+                © {new Date().getFullYear()} {organizationName}. All rights
+                reserved.
               </Text>
               <Text className='m-0 text-[12px] leading-[16px] text-gray-500'>
                 123 Business Street, Suite 100, Business City, BC 12345

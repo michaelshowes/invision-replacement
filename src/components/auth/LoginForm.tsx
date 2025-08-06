@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { FaMicrosoft, FaSlack } from 'react-icons/fa';
+import { FaMicrosoft } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -22,14 +22,12 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { authClient } from '@/lib/auth-client';
 import { cn } from '@/lib/utils';
 import { signIn } from '@/server/user';
 import { socialSignIn } from '@/utils/socialSignIn';

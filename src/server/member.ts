@@ -5,9 +5,8 @@ import { auth } from '@/lib/auth';
 
 import { isAdmin } from './permission';
 
-export async function addMembertoClient(
-  clientId: string,
-  clientName: string,
+export async function addMember(
+  organizationId: string,
   userId: string,
   role: Role
 ) {
@@ -16,28 +15,24 @@ export async function addMembertoClient(
       body: {
         userId,
         role,
-        organizationId: clientId
+        organizationId
       }
     });
 
     return {
       success: true,
-      message: `Member added successfully to ${clientName}`
+      message: `Member added successfully to ${organizationId}`
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: `Failed to add member to ${clientName}`
+      message: `Failed to add member to ${organizationId}`
     };
   }
 }
 
-export async function removeMemberfromClient(
-  clientId: string,
-  clientName: string,
-  userId: string
-) {
+export async function removeMember(organizationId: string, userId: string) {
   const admin = await isAdmin();
 
   if (!admin) {
@@ -51,19 +46,19 @@ export async function removeMemberfromClient(
     await auth.api.removeMember({
       body: {
         memberIdOrEmail: userId,
-        organizationId: clientId
+        organizationId
       }
     });
 
     return {
       success: true,
-      message: `Member removed successfully from ${clientName}`
+      message: `Member removed successfully from ${organizationId}`
     };
   } catch (error) {
     console.error(error);
     return {
       success: false,
-      message: `Failed to remove member from ${clientName}`
+      message: `Failed to remove member from ${organizationId}`
     };
   }
 }

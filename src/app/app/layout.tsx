@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      {children}
+      <div className={'px-4'}>{children}</div>
     </>
   );
 }

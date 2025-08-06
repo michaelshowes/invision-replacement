@@ -44,10 +44,7 @@ export async function signUp(email: string, password: string, name: string) {
       body: {
         email,
         password,
-        name,
-        firstName: '',
-        lastName: '',
-        isAdmin: false
+        name
       }
     });
 

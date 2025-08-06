@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 
 export async function GET(
-  req: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ invitationId: string }> }
 ) {
   const { invitationId } = await params;
@@ -18,9 +18,9 @@ export async function GET(
     });
 
     console.log(data);
-    return NextResponse.redirect(new URL('/app', req.url));
+    return NextResponse.redirect(new URL('/app', request.url));
   } catch (error) {
     console.error(error);
-    return NextResponse.redirect(new URL('/app', req.url));
+    return NextResponse.redirect(new URL('/app', request.url));
   }
 }
