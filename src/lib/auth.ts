@@ -16,7 +16,10 @@ import { resend } from './resend';
 
 // Server-side auth configuration
 export const auth = betterAuth({
-  trustedOrigins: ['https://localhost:3000'],
+  trustedOrigins: [
+    'https://localhost:3000',
+    'https://invision-replacement.vercel.app/'
+  ],
   user: {
     additionalFields: {
       firstName: { type: 'string', input: false },
