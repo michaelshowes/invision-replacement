@@ -26,7 +26,7 @@ export function createDatabaseClient(config: DatabaseConfig) {
   switch (config.provider) {
     case 'neon':
       const sql = neon(config.url);
-      return drizzleNeon(sql);
+      return drizzleNeon(sql, { schema });
 
     case 'postgres':
     default:
