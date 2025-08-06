@@ -18,6 +18,49 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Database Configuration
+
+This project supports multiple database providers with automatic environment-based switching:
+
+### Environment Variables
+
+```env
+# Required: Database connection URL
+DATABASE_URL="postgresql://user:password@localhost:5432/database"
+
+# Optional: Explicitly set database provider
+# Values: 'postgres' (default for development) or 'neon' (default for production)
+# If not set, will use 'postgres' for development and 'neon' for production
+DATABASE_PROVIDER="postgres"
+```
+
+### Development Setup (PostgreSQL)
+
+For local development, use PostgreSQL with connection pooling:
+
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/database"
+DATABASE_PROVIDER="postgres"  # Optional, default for development
+```
+
+### Production Setup (Neon)
+
+For production, use Neon serverless:
+
+```env
+DATABASE_URL="postgresql://user:password@your-neon-instance/database"
+DATABASE_PROVIDER="neon"  # Optional, default for production
+```
+
+### Automatic Switching
+
+The system automatically chooses the database provider based on `NODE_ENV`:
+
+- `NODE_ENV=development` → Uses `postgres` provider
+- `NODE_ENV=production` → Uses `neon` provider
+
+You can override this behavior by setting `DATABASE_PROVIDER` explicitly.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
