@@ -1,6 +1,24 @@
 'use server';
 
-import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+
+import { User, auth } from '@/lib/auth';
+
+export async function getCurrentUser() {
+  const session = await auth.api.getSession({
+    headers: await headers()
+  });
+
+  if (!session?.user) {
+    redirect('/auth/login');
+  }
+
+  return {
+    user: session.user as User,
+    session: session.session
+  };
+}
 
 /**
  * Sign in a user with email and password.

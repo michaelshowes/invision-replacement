@@ -1,17 +1,16 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { organization } from './auth/organization';
-import { screen } from './screen';
+import { section } from './section';
 
-const section = pgTable('section', {
+const screen = pgTable('screen', {
   id: text('id').primaryKey(),
   name: text('name').notNull(),
   description: text('description'),
   order: integer('order'),
-  organizationId: text('organization_id')
+  sectionId: text('section_id')
     .notNull()
-    .references(() => organization.id, { onDelete: 'cascade' }),
+    .references(() => section.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at')
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
@@ -20,12 +19,11 @@ const section = pgTable('section', {
     .notNull()
 });
 
-const sectionRelations = relations(section, ({ one, many }) => ({
-  organization: one(organization, {
-    fields: [section.organizationId],
-    references: [organization.id]
-  }),
-  screens: many(screen)
+const screenRelations = relations(screen, ({ one }) => ({
+  section: one(section, {
+    fields: [screen.sectionId],
+    references: [section.id]
+  })
 }));
 
-export { section, sectionRelations };
+export { screen, screenRelations };

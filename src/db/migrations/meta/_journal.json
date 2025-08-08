@@ -8,6 +8,13 @@
       "when": 1754493936809,
       "tag": "0000_messy_supreme_intelligence",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1754500413459,
+      "tag": "0001_yielding_red_wolf",
+      "breakpoints": true
     }
   ]
 }

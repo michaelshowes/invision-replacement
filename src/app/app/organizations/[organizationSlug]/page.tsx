@@ -1,9 +1,12 @@
 import { headers } from 'next/headers';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import InvitationBtn from '@/components/email/InvitationBtn';
+import CreateSection from '@/components/section/CreateSection';
 import { auth } from '@/lib/auth';
 import { getOrganizationBySlug } from '@/server/organization';
+import { getSections } from '@/server/section';
 
 interface organizationPageProps {
   organizationSlug: string;
@@ -33,14 +36,28 @@ export default async function organizationPage({
     return <div>You are not a member of this organization</div>;
   }
 
+  const sections = await getSections(organization.id);
+
   return (
-    <div>
+    <>
       <h1>{organization.name}</h1>
-      <InvitationBtn
+      <CreateSection
+        organizationId={organization.id}
+        name='New Section'
+      />
+      {sections.data?.map((section) => (
+        <Link
+          key={section.id}
+          href={`/app/organizations/${organizationSlug}/${section.id}`}
+        >
+          {section.name}
+        </Link>
+      ))}
+      {/* <InvitationBtn
         email={'mshowes@okidigital.io'}
         role={'member'}
         organizationId={organization.id}
-      />
-    </div>
+      /> */}
+    </>
   );
 }

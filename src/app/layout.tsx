@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import { Toaster } from 'sonner';
 
-import './globals.css';
+import '../globals.css';
 
 export const metadata: Metadata = {
   title: 'Invision Replacement',
@@ -15,7 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html
+      lang='en'
+      className={'h-full'}
+    >
       <body className='h-full'>
         <Toaster position={'top-center'} />
         {children}
